@@ -48,7 +48,7 @@ app.post(
     }
   },
   (req, res) => {
-    const { timezone } = req.body;
+    const { timezone, os } = req.body;
     console.log(`Timezone: ${timezone}`); // Log the timezone for debugging
 
     if (timezone === "Asia/Tokyo") {
